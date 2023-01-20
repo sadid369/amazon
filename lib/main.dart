@@ -2,9 +2,12 @@ import 'package:amazon/constants/global_verables.dart';
 import 'package:amazon/features/auth/screens/auth_screens.dart';
 import 'package:amazon/router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  // WidgetsFlutterBinding.ensureInitialized();
+  runApp(const ProviderScope(child: const MyApp()));
+  // runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

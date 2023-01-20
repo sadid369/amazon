@@ -27,7 +27,12 @@ class CustomTextField extends ConsumerWidget {
           ),
         ),
       ),
-      validator: (val) {},
+      validator: (val) {
+        if (val == null || val.isEmpty) {
+          return 'Enter your $hintText';
+        }
+        return null;
+      },
     );
   }
 }

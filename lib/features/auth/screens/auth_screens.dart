@@ -1,6 +1,7 @@
 import 'package:amazon/common/widgets/custom_button.dart';
 import 'package:amazon/common/widgets/custom_textfield.dart';
 import 'package:amazon/constants/global_verables.dart';
+import 'package:amazon/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -25,12 +26,23 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+  AuthService authService = AuthService();
+
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
+  }
+
+  void signUpUser() {
+    ref.read(authServiceProvider.notifier).signup(
+          context: context,
+          email: _emailController.text,
+          password: _passwordController.text,
+          name: _nameController.text,
+        );
   }
 
   @override
@@ -102,7 +114,11 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                       ),
                       CustomButton(
                         text: 'Sign Up',
-                        onTap: () {},
+                        onTap: () {
+                          if (_signUpFormKey.currentState!.validate()) {
+                            signUpUser();
+                          }
+                        },
                       ),
                     ],
                   ),
