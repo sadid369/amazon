@@ -26,7 +26,6 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  AuthService authService = AuthService();
 
   @override
   void dispose() {
@@ -37,11 +36,19 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   }
 
   void signUpUser() {
-    ref.read(authServiceProvider.notifier).signup(
+    ref.read(authServiceProvider.notifier).signUpUser(
           context: context,
           email: _emailController.text,
           password: _passwordController.text,
           name: _nameController.text,
+        );
+  }
+
+  void signInUser() {
+    ref.read(authServiceProvider.notifier).signInUser(
+          context: context,
+          email: _emailController.text,
+          password: _passwordController.text,
         );
   }
 
@@ -150,7 +157,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                 padding: const EdgeInsets.all(8),
                 color: GlobalVariables.backgroundColor,
                 child: Form(
-                  key: _signUpFormKey,
+                  key: _signInFormKey,
                   child: Column(
                     children: [
                       CustomTextField(
@@ -169,7 +176,11 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                       ),
                       CustomButton(
                         text: 'Sign In',
-                        onTap: () {},
+                        onTap: () {
+                          if (_signInFormKey.currentState!.validate()) {
+                            signInUser();
+                          }
+                        },
                       ),
                     ],
                   ),
