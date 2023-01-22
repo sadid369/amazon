@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:amazon/constants/error_handling.dart';
@@ -104,6 +106,38 @@ class AuthService extends StateNotifier<bool> {
               (route) => false,
             );
           });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  void getUserData(BuildContext context) async {
+    try {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+
+      String? token = sharedPreferences.getString('x-auth-token');
+      if (token == null) {
+        sharedPreferences.setString("x-auth-token", '');
+      }
+      var tokenRes = await http
+          .post(Uri.parse('$uri/tokenIsValid'), headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "x-auth-token": token!,
+      });
+      var response = jsonDecode(tokenRes.body);
+      if (response == true) {
+        http.Response userRes = await http.get(
+          Uri.parse('$uri/'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            "x-auth-token": token,
+          },
+        );
+        _ref
+            .read(userProvider.notifier)
+            .update((state) => User.fromJson(userRes.body));
+      }
     } catch (e) {
       showSnackBar(context, e.toString());
     }

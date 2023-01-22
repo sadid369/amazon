@@ -1,5 +1,7 @@
 import 'package:amazon/constants/global_verables.dart';
 import 'package:amazon/features/auth/screens/auth_screens.dart';
+import 'package:amazon/features/auth/services/auth_service.dart';
+import 'package:amazon/features/home/screens/home_screen.dart';
 import 'package:amazon/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,11 +12,22 @@ void main() {
   // runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(authServiceProvider.notifier).getUserData(context);
+  }
 
   @override
   Widget build(BuildContext context) {
+    // bool isLoading = ref.watch(authServiceProvider);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Amazon Clone',
@@ -31,6 +44,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
         onGenerateRoute: (settings) => generateRoute(settings),
-        home: const AuthScreen());
+        home: ref.watch(userProvider)!.token.isNotEmpty
+            ? const HomeScreen()
+            : const AuthScreen());
   }
 }
