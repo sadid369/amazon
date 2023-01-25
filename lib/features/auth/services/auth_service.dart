@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:amazon/common/widgets/bottom_bar.dart';
 import 'package:amazon/constants/error_handling.dart';
 import 'package:amazon/constants/global_verables.dart';
 import 'package:amazon/constants/utils.dart';
@@ -102,7 +103,7 @@ class AuthService extends StateNotifier<bool> {
 
             Navigator.pushNamedAndRemoveUntil(
               context,
-              HomeScreen.routeName,
+              BottomBar.routeName,
               (route) => false,
             );
           });

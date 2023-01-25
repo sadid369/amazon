@@ -22,6 +22,5 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Text(user.email),
       ),
     );
-    ;
   }
 }
