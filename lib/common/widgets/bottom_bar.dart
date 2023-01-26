@@ -1,4 +1,5 @@
 import 'package:amazon/constants/global_verables.dart';
+import 'package:amazon/features/account/screens/account_screen.dart';
 import 'package:amazon/features/home/screens/home_screen.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
@@ -17,9 +18,7 @@ class _BottomBarState extends State<BottomBar> {
   double bottomBarBorderWidth = 5;
   List<Widget> pages = [
     const HomeScreen(),
-    const Center(
-      child: Text("Account Page"),
-    ),
+    const AccountScreen(),
     const Center(
       child: Text("Cart Page"),
     ),
