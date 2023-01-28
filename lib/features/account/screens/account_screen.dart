@@ -1,5 +1,6 @@
 import 'package:amazon/constants/global_verables.dart';
 import 'package:amazon/features/account/widgets/below_app_bar.dart';
+import 'package:amazon/features/account/widgets/orders.dart';
 import 'package:amazon/features/account/widgets/top_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,6 +62,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
           SizedBox(
             height: 20,
           ),
+          Orders()
         ],
       ),
     );
