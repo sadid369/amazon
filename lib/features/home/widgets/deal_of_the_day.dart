@@ -104,7 +104,7 @@ class _DealOfTheDayState extends ConsumerState<DealOfTheDay> {
               color: Colors.cyan[800],
             ),
           ),
-        )
+        ),
       ],
     );
   }

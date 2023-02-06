@@ -1,5 +1,6 @@
 import 'package:amazon/common/widgets/bottom_bar.dart';
 import 'package:amazon/constants/global_verables.dart';
+import 'package:amazon/features/admin/screens/admin_screens.dart';
 import 'package:amazon/features/auth/screens/auth_screens.dart';
 import 'package:amazon/features/auth/services/auth_service.dart';
 import 'package:amazon/features/home/screens/home_screen.dart';
@@ -47,7 +48,9 @@ class _MyAppState extends ConsumerState<MyApp> {
         ),
         onGenerateRoute: (settings) => generateRoute(settings),
         home: ref.watch(userProvider)!.token.isNotEmpty
-            ? const BottomBar()
+            ? ref.watch(userProvider)!.type == "user"
+                ? const BottomBar()
+                : const AdminScreen()
             : const AuthScreen());
   }
 }
