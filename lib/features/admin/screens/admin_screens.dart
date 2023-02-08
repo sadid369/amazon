@@ -49,6 +49,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
               const Text(
                 "Admin",
                 style: TextStyle(
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
               )

@@ -4,8 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class CustomTextField extends ConsumerWidget {
   final TextEditingController controller;
   final String hintText;
+  final int maxLines;
   const CustomTextField({
     super.key,
+    this.maxLines = 1,
     required this.controller,
     required this.hintText,
   });
@@ -33,6 +35,7 @@ class CustomTextField extends ConsumerWidget {
         }
         return null;
       },
+      maxLines: maxLines,
     );
   }
 }
