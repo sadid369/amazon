@@ -4,6 +4,7 @@ import 'package:amazon/common/widgets/custom_button.dart';
 import 'package:amazon/common/widgets/custom_textfield.dart';
 import 'package:amazon/constants/global_verables.dart';
 import 'package:amazon/constants/utils.dart';
+import 'package:amazon/features/admin/services/admin_services.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
   String category = 'Mobiles';
   List<File> images = [];
+  final _addProductFormKey = GlobalKey<FormState>();
   List<String> productCategories = [
     "Mobiles",
     "Essentials",
@@ -40,6 +42,21 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
     'Books',
     'Fashion'
   ];
+  void sellProduct() {
+    if (_addProductFormKey.currentState!.validate() && images.isNotEmpty) {
+      ref.read(adminServiceProvider.notifier).sellProduct(
+            context: context,
+            name: productNameController.text,
+            description: descriptionController.text,
+            price: double.parse(priceController.text),
+            quantity: double.parse(quantityController.text),
+            category: category,
+            images: images,
+            ref: ref,
+          );
+    }
+  }
+
   void selectImages() async {
     var res = await pickImages();
     setState(() {
@@ -66,6 +83,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       ),
       body: SingleChildScrollView(
         child: Form(
+          key: _addProductFormKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
@@ -174,7 +192,9 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
                 ),
                 CustomButton(
                   text: 'Sell',
-                  onTap: () {},
+                  onTap: () {
+                    sellProduct();
+                  },
                 ),
               ],
             ),
