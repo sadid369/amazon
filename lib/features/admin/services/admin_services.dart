@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:amazon/constants/error_handling.dart';
@@ -61,5 +62,41 @@ class AdminServices extends StateNotifier<bool> {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  Future<List<Product>> fetchAllProducts(
+      BuildContext context, WidgetRef ref) async {
+    List<Product> productList = [];
+    try {
+      http.Response res = await http.get(
+        Uri.parse('$uri/admin/get-product'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': ref.read(userProvider)!.token
+        },
+      );
+      print("from here ${res.body}");
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          print(res.body);
+          for (var i = 0; i < jsonDecode(res.body).length; i++) {
+            productList.add(
+              Product.fromJson(
+                jsonEncode(
+                  jsonDecode(res.body)[i],
+                ),
+              ),
+            );
+          }
+        },
+      );
+    } catch (e) {
+      print(e.toString());
+      showSnackBar(context, e.toString());
+    }
+
+    return productList;
   }
 }
