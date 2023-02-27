@@ -28,13 +28,12 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
     products = await ref
         .read(adminServiceProvider.notifier)
         .fetchAllProducts(context, ref);
-    print("fetchAllProducts $products");
+
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    print("build $products");
     return products == null
         ? const Loader()
         : Scaffold(
@@ -43,7 +42,6 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2),
                 itemBuilder: (context, index) {
-                  print(products);
                   final productsData = products![index];
                   return Column(
                     children: [

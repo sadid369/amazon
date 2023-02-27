@@ -75,12 +75,11 @@ class AdminServices extends StateNotifier<bool> {
           'x-auth-token': ref.read(userProvider)!.token
         },
       );
-      print("from here ${res.body}");
+
       httpErrorHandle(
         response: res,
         context: context,
         onSuccess: () {
-          print(res.body);
           for (var i = 0; i < jsonDecode(res.body).length; i++) {
             productList.add(
               Product.fromJson(
@@ -93,7 +92,6 @@ class AdminServices extends StateNotifier<bool> {
         },
       );
     } catch (e) {
-      print(e.toString());
       showSnackBar(context, e.toString());
     }
 
