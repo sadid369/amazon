@@ -28,5 +28,14 @@ adminRouter.get("/admin/get-product", admin, async (req, res, next) => {
     res.status(500).json({ error: e.message });
   }
 });
+adminRouter.delete("/admin/delete-product", admin, async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    let product = await Product.findByIdAndDelete(id);
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 module.exports = adminRouter;

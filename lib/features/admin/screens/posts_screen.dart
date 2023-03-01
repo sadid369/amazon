@@ -32,6 +32,17 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
     setState(() {});
   }
 
+  void deleteProduct(Product product, int index) async {
+    ref.read(adminServiceProvider.notifier).deleteProduct(
+        context: context,
+        product: product,
+        onSuccess: () {
+          products!.removeAt(index);
+          setState(() {});
+        },
+        ref: ref);
+  }
+
   @override
   Widget build(BuildContext context) {
     return products == null
@@ -59,7 +70,9 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
                             ),
                           ),
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                deleteProduct(productsData, index);
+                              },
                               icon: const Icon(
                                 Icons.delete_outline_outlined,
                               ))

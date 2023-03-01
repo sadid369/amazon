@@ -97,4 +97,29 @@ class AdminServices extends StateNotifier<bool> {
 
     return productList;
   }
+
+  void deleteProduct(
+      {required BuildContext context,
+      required Product product,
+      required VoidCallback onSuccess,
+      required WidgetRef ref}) async {
+    try {
+      http.Response res = await http.delete(
+        Uri.parse("$uri/admin/delete-product"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': ref.read(userProvider)!.token
+        },
+        body: jsonEncode({"id": product.id}),
+      );
+      httpErrorHandle(
+          response: res,
+          context: context,
+          onSuccess: () {
+            onSuccess();
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 }
