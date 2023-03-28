@@ -25,7 +25,7 @@ class AuthService extends StateNotifier<bool> {
   AuthService({required Ref ref})
       : _ref = ref,
         super(false);
-  void signUpUser({
+  Future<void> signUpUser({
     required BuildContext context,
     required String email,
     required String password,
@@ -65,7 +65,7 @@ class AuthService extends StateNotifier<bool> {
     }
   }
 
-  void signInUser({
+  Future<void> signInUser({
     required BuildContext context,
     required String email,
     required String password,
