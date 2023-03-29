@@ -1,15 +1,17 @@
 import 'package:amazon/common/widgets/bottom_bar.dart';
+import 'package:amazon/common/widgets/loader.dart';
 import 'package:amazon/constants/global_verables.dart';
 import 'package:amazon/features/admin/screens/admin_screens.dart';
 import 'package:amazon/features/auth/screens/auth_screens.dart';
 import 'package:amazon/features/auth/services/auth_service.dart';
 import 'package:amazon/features/home/screens/home_screen.dart';
+import 'package:amazon/models/user.dart';
 import 'package:amazon/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: const MyApp()));
   // runApp(const MyApp());
 }
@@ -24,12 +26,17 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     super.initState();
-    ref.read(authServiceProvider.notifier).getUserData(context);
+    // ref.read(authServiceProvider.notifier).getUserData(context);
+    fetchData();
+  }
+
+  void fetchData() async {
+    await ref.read(authServiceProvider.notifier).getUserData(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    // bool isLoading = ref.watch(authServiceProvider);
+    User? isLoading = ref.watch(authServiceProvider);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Amazon Clone',
@@ -47,10 +54,27 @@ class _MyAppState extends ConsumerState<MyApp> {
           ),
         ),
         onGenerateRoute: (settings) => generateRoute(settings),
-        home: ref.watch(userProvider)!.token.isNotEmpty
-            ? ref.watch(userProvider)!.type == "user"
-                ? const BottomBar()
-                : const AdminScreen()
-            : const AuthScreen());
+        // home: ref.watch(userProvider)!.token.isNotEmpty
+        //     ? ref.watch(userProvider)!.type == "user"
+        //         ? const BottomBar()
+        //         : const AdminScreen()
+        //     : const AuthScreen());
+        home: isLoading == null
+            ? const Scaffold(
+                body: Center(
+                  child: const Loader(),
+                ),
+              )
+            : ref.watch(userProviderFuture).when(
+                  data: (data) {
+                    return data!.token.isNotEmpty
+                        ? data.type == 'user'
+                            ? const BottomBar()
+                            : const AdminScreen()
+                        : const AuthScreen();
+                  },
+                  error: (error, stackTrace) => const Text('error'),
+                  loading: () => const Loader(),
+                ));
   }
 }

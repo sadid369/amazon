@@ -16,15 +16,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 final userProvider = StateProvider<User?>((ref) {
   return null;
 });
-final authServiceProvider = StateNotifierProvider<AuthService, bool>((ref) {
+final userProviderFuture =
+    FutureProvider<User?>((ref) => ref.watch(userProvider));
+final authServiceProvider = StateNotifierProvider<AuthService, User?>((ref) {
   return AuthService(ref: ref);
 });
 
-class AuthService extends StateNotifier<bool> {
+class AuthService extends StateNotifier<User?> {
   final Ref _ref;
   AuthService({required Ref ref})
       : _ref = ref,
-        super(false);
+        super(null);
   Future<void> signUpUser({
     required BuildContext context,
     required String email,
@@ -70,7 +72,6 @@ class AuthService extends StateNotifier<bool> {
     required String email,
     required String password,
   }) async {
-    state = true;
     try {
       User user = User(
         id: "",
@@ -112,7 +113,7 @@ class AuthService extends StateNotifier<bool> {
     }
   }
 
-  void getUserData(BuildContext context) async {
+  Future<void> getUserData(BuildContext context) async {
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
@@ -135,6 +136,7 @@ class AuthService extends StateNotifier<bool> {
             "x-auth-token": token,
           },
         );
+        state = User.fromJson(userRes.body);
         _ref
             .read(userProvider.notifier)
             .update((state) => User.fromJson(userRes.body));
