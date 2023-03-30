@@ -60,11 +60,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         //         : const AdminScreen()
         //     : const AuthScreen());
         home: isLoading == null
-            ? const Scaffold(
-                body: Center(
-                  child: const Loader(),
-                ),
-              )
+            ? const Loader()
             : ref.watch(userProviderFuture).when(
                   data: (data) {
                     return data!.token.isNotEmpty

@@ -4,6 +4,7 @@ import 'package:amazon/features/home/widgets/address_box.dart';
 import 'package:amazon/features/home/widgets/carousel_image.dart';
 import 'package:amazon/features/home/widgets/deal_of_the_day.dart';
 import 'package:amazon/features/home/widgets/top_categories.dart';
+import 'package:amazon/features/search/screen/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,9 +17,12 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  void navigateToSearchScreen(String query) {
+    Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userProvider)!;
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60),
@@ -36,6 +40,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         borderRadius: BorderRadius.circular(7),
                         elevation: 1,
                         child: TextFormField(
+                          onFieldSubmitted: navigateToSearchScreen,
                           decoration: InputDecoration(
                               prefixIcon: InkWell(
                                 onTap: () {},

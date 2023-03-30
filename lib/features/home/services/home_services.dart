@@ -10,20 +10,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
 final categoryProductProvider =
-    StateNotifierProvider<HomeServices, bool>((ref) => HomeServices());
+    StateNotifierProvider<HomeServices, List<Product>?>(
+        (ref) => HomeServices());
 // final categoryProductProvider =
 //     FutureProvider.family<List<Product>, WidgetRef, BuildContext, String>(
 //         (ref, ref, context, category) => ref
 //             .read(categoryProductProvider.notifier)
 //             .fetchCategoryProducts(
 //                 context: context, ref: ref, category: category));
-final categoryProductFutureProvider =
-    FutureProvider.family<List<Product>, List<dynamic>>((ref, arg) => ref
-        .read(categoryProductProvider.notifier)
-        .fetchCategoryProducts(context: arg[0], ref: arg[1], category: arg[2]));
+// final categoryProductFutureProvider =
+//     FutureProvider.family<List<Product>, List<dynamic>>((ref, arg) => ref
+//         .read(categoryProductProvider.notifier)
+//         .fetchCategoryProducts(context: arg[0], ref: arg[1], category: arg[2]));
 
-class HomeServices extends StateNotifier<bool> {
-  HomeServices() : super(false);
+class HomeServices extends StateNotifier<List<Product>?> {
+  HomeServices() : super(null);
   Future<List<Product>> fetchCategoryProducts(
       {required BuildContext context,
       required WidgetRef ref,
@@ -58,6 +59,7 @@ class HomeServices extends StateNotifier<bool> {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+    state = productList;
 
     return productList;
   }
