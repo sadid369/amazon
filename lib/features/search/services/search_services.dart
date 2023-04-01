@@ -9,28 +9,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-final categoryProductProvider =
-    StateNotifierProvider<HomeServices, List<Product>?>(
-        (ref) => HomeServices());
+final searchProductProvider =
+    StateNotifierProvider<SearchServices, List<Product>?>(
+        (ref) => SearchServices());
 
-class HomeServices extends StateNotifier<List<Product>?> {
-  HomeServices() : super(null);
-  Future<List<Product>> fetchCategoryProducts(
+class SearchServices extends StateNotifier<List<Product>?> {
+  SearchServices() : super(null);
+  Future<List<Product>> fetchSearchProducts(
       {required BuildContext context,
       required WidgetRef ref,
-      required String category}) async {
+      required String searchQuery}) async {
     List<Product> productList = [];
-    print(category);
+
     try {
       http.Response res = await http.get(
-        Uri.parse('$uri/api/products?category=$category'),
+        Uri.parse('$uri/api/products/search/$searchQuery'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': ref.read(userProvider)!.token
         },
       );
       print(res.body);
-
       httpErrorHandle(
         response: res,
         context: context,
