@@ -4,10 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class CustomButton extends ConsumerWidget {
   final String text;
   final VoidCallback onTap;
+  final Color? color;
   const CustomButton({
-    super.key,
     required this.text,
     required this.onTap,
+    this.color,
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,8 +19,12 @@ class CustomButton extends ConsumerWidget {
           double.infinity,
           50,
         ),
+        backgroundColor: color,
       ),
-      child: Text(text),
+      child: Text(
+        text,
+        style: TextStyle(color: color == null ? Colors.white : Colors.black),
+      ),
     );
   }
 }

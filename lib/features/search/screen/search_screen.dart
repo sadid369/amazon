@@ -1,6 +1,7 @@
 import 'package:amazon/common/widgets/loader.dart';
 import 'package:amazon/constants/global_verables.dart';
 import 'package:amazon/features/home/widgets/address_box.dart';
+import 'package:amazon/features/product_details/screens/product_detail_screen.dart';
 import 'package:amazon/features/search/services/search_services.dart';
 import 'package:amazon/features/search/widgets/search_products.dart';
 import 'package:amazon/models/product.dart';
@@ -122,7 +123,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       child: ListView.builder(
                     itemCount: products.length,
                     itemBuilder: (context, index) {
-                      return SearchProducts(product: products[index]);
+                      return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, ProductDetailScreen.routeName,
+                                arguments: products[index]);
+                          },
+                          child: SearchProducts(product: products[index]));
                     },
                   ))
                 ],

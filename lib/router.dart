@@ -3,7 +3,9 @@ import 'package:amazon/features/account/screens/category_deals_screen.dart';
 import 'package:amazon/features/admin/screens/add_product_screen.dart';
 import 'package:amazon/features/auth/screens/auth_screens.dart';
 import 'package:amazon/features/home/screens/home_screen.dart';
+import 'package:amazon/features/product_details/screens/product_detail_screen.dart';
 import 'package:amazon/features/search/screen/search_screen.dart';
+import 'package:amazon/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -34,6 +36,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       var searchQuery = routeSettings.arguments as String;
       return MaterialPageRoute(
         builder: (context) => SearchScreen(searchQuery: searchQuery),
+      );
+    case ProductDetailScreen.routeName:
+      var product = routeSettings.arguments as Product;
+      return MaterialPageRoute(
+        builder: (context) => ProductDetailScreen(product: product),
       );
 
     default:

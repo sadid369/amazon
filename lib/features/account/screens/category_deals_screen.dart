@@ -1,5 +1,6 @@
 import 'package:amazon/common/widgets/loader.dart';
 import 'package:amazon/features/home/services/home_services.dart';
+import 'package:amazon/features/product_details/screens/product_detail_screen.dart';
 import 'package:amazon/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -81,6 +82,11 @@ class _CategoryDealsScreenState extends ConsumerState<CategoryDealsScreen> {
                       ),
                       itemBuilder: (context, index) {
                         return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, ProductDetailScreen.routeName,
+                                arguments: product[index]);
+                          },
                           child: Column(
                             children: [
                               SizedBox(
